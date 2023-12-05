@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <script>
+            const a = 24100;
+            const b = 102;
+            const c = 89;
+            const d = 100;
+
+            let max = 0;
+            let secondMax = 0;
+
+            if (max < a) {
+                max = a;
+            }
+
+            if (max < b) {
+                max = b;
+            }
+
+            if (max < c) {
+                max = c;
+            }
+
+            if (max < d) {
+                max = d;
+            }
+
+            if (secondMax < a) {
+                if (a < max) {
+                    secondMax = a;
+                }
+            }
+
+            if (secondMax < b) {
+                if (b < max) {
+                    secondMax = b;
+                }
+            }
+
+            if (secondMax < c) {
+                if (c < max) {
+                    secondMax = c;
+                }
+            }
+
+            if (secondMax < d) {
+                if (d < max) {
+                    secondMax = d;
+                }
+            }
+
+            console.log(max);
+            console.log(secondMax);
+        </script>
+    </body>
+</html>
