@@ -1,0 +1,4 @@
+- data type
+- input from 
+- logical operators
+- 
