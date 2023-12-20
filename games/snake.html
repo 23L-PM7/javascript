@@ -8,6 +8,7 @@
         .body {
             position: absolute;
             background-color: black;
+            border-radius: 5px;
         }
 
         .food {
@@ -17,12 +18,15 @@
             background-color: red;
             top: 100px;
             left: 200px;
+            border-radius: 5px;
         }
     </style>
     <body>
         <div class="playground" id="playground">
             <div class="body" id="snakeHead"></div>
             <div class="food" id="snakeFood"></div>
+
+            <div id="snakeBody"></div>
         </div>
 
         <div>Score: <span id="scoreElement">0</span></div>
@@ -39,6 +43,12 @@
 
             let score = 0;
 
+            let snakeBodyParts = [
+                { top: 2, left: 2 },
+                { top: 2, left: 3 },
+                { top: 2, left: 4 },
+            ];
+
             let snakePositionLeft = 0;
             let snakePositionTop = 0;
             let direction = "right"; // left, up, down
@@ -47,6 +57,26 @@
             let foodPositionLeft;
 
             const scoreElement = document.getElementById("scoreElement");
+
+            function listenKeydown(event) {
+                console.log(event.key);
+
+                switch (event.key) {
+                    case "ArrowUp":
+                        changeDirection("up");
+                        break;
+                    case "ArrowDown":
+                        changeDirection("down");
+                        break;
+                    case "ArrowRight":
+                        changeDirection("right");
+                        break;
+                    case "ArrowLeft":
+                        changeDirection("left");
+                        break;
+                }
+            }
+            document.addEventListener("keydown", listenKeydown);
 
             function initPlayground() {
                 const playground = document.getElementById("playground");
@@ -60,10 +90,25 @@
                 const food = document.getElementById("snakeFood");
                 food.style.height = 1 * unit;
                 food.style.width = 1 * unit;
+
+                let bodyHtml = "";
+                for (let i = 0; i < snakeBodyParts.length; i++) {
+                    bodyHtml += '<div class="body" style="width: ' + unit + "px; height: " + unit + "px; top: " + snakeBodyParts[i].top * unit + "px; left:" + snakeBodyParts[i].left * unit + 'px"></div>';
+                }
+                const body = document.getElementById("snakeBody");
+                body.innerHTML = bodyHtml;
             }
 
             function changeDirection(value) {
-                direction = value;
+                if (direction == "up" || direction == "down") {
+                    if (value == "left" || value == "right") {
+                        direction = value;
+                    }
+                } else if (direction == "right" || direction == "left") {
+                    if (value == "up" || value == "down") {
+                        direction = value;
+                    }
+                }
             }
 
             function goRight() {
@@ -142,7 +187,7 @@
 
             initPlayground();
             generateFood();
-            setInterval(gameLoop, 500);
+            setInterval(gameLoop, 200);
         </script>
     </body>
 </html>
