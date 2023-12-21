@@ -23,7 +23,6 @@
     </style>
     <body>
         <div class="playground" id="playground">
-            <div class="body" id="snakeHead"></div>
             <div class="food" id="snakeFood"></div>
 
             <div id="snakeBody"></div>
@@ -43,14 +42,17 @@
 
             let score = 0;
 
-            let snakeBodyParts = [
-                { top: 2, left: 2 },
-                { top: 2, left: 3 },
+            const initialParts = [
                 { top: 2, left: 4 },
+                { top: 2, left: 3 },
+                { top: 2, left: 2 },
+                { top: 2, left: 1 },
             ];
 
-            let snakePositionLeft = 0;
-            let snakePositionTop = 0;
+            let snakeBodyParts = initialParts;
+
+            let snakePositionLeft = 4;
+            let snakePositionTop = 2;
             let direction = "right"; // left, up, down
 
             let foodPositionTop;
@@ -59,8 +61,6 @@
             const scoreElement = document.getElementById("scoreElement");
 
             function listenKeydown(event) {
-                console.log(event.key);
-
                 switch (event.key) {
                     case "ArrowUp":
                         changeDirection("up");
@@ -78,22 +78,30 @@
             }
             document.addEventListener("keydown", listenKeydown);
 
-            function initPlayground() {
+            function resetPlayground() {
                 const playground = document.getElementById("playground");
                 playground.style.height = playgroundHeight * unit;
                 playground.style.width = playgroundWidth * unit;
-
-                const head = document.getElementById("snakeHead");
-                head.style.height = 1 * unit;
-                head.style.width = 1 * unit;
 
                 const food = document.getElementById("snakeFood");
                 food.style.height = 1 * unit;
                 food.style.width = 1 * unit;
 
+                score = 0;
+
+                generateFood();
+                direction = "right";
+
+                snakeBodyParts = [...initialParts];
+                snakePositionLeft = 4;
+                snakePositionTop = 2;
+            }
+
+            function renderBodyParts() {
                 let bodyHtml = "";
                 for (let i = 0; i < snakeBodyParts.length; i++) {
-                    bodyHtml += '<div class="body" style="width: ' + unit + "px; height: " + unit + "px; top: " + snakeBodyParts[i].top * unit + "px; left:" + snakeBodyParts[i].left * unit + 'px"></div>';
+                    const bodyStyle = `width: ${unit}px; height: ${unit}px; top: ${snakeBodyParts[i].top * unit}px; left: ${snakeBodyParts[i].left * unit}px`;
+                    bodyHtml += `<div class="body" style="${bodyStyle}"></div>`;
                 }
                 const body = document.getElementById("snakeBody");
                 body.innerHTML = bodyHtml;
@@ -158,8 +166,6 @@
             }
 
             function gameLoop() {
-                const head = document.getElementById("snakeHead");
-
                 switch (direction) {
                     case "up":
                         goUp();
@@ -175,18 +181,28 @@
                         break;
                 }
 
-                head.style.left = snakePositionLeft * unit;
-                head.style.top = snakePositionTop * unit;
+                for (let i = 0; i < snakeBodyParts.length; i++) {
+                    if (snakePositionTop == snakeBodyParts[i].top && snakePositionLeft == snakeBodyParts[i].left) {
+                        resetPlayground();
+                        alert("Game over");
+                        break;
+                    }
+                }
+
+                snakeBodyParts.unshift({ top: snakePositionTop, left: snakePositionLeft });
+                snakeBodyParts.pop();
+
+                renderBodyParts();
 
                 if (snakePositionTop == foodPositionTop && snakePositionLeft == foodPositionLeft) {
                     score++;
                     scoreElement.innerText = score;
                     generateFood();
+                    snakeBodyParts.push({});
                 }
             }
 
-            initPlayground();
-            generateFood();
+            resetPlayground();
             setInterval(gameLoop, 200);
         </script>
     </body>
