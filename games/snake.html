@@ -1,0 +1,209 @@
+<html>
+    <style>
+        .playground {
+            background-color: aquamarine;
+            position: relative;
+        }
+
+        .body {
+            position: absolute;
+            background-color: black;
+            border-radius: 5px;
+        }
+
+        .food {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            top: 100px;
+            left: 200px;
+            border-radius: 5px;
+        }
+    </style>
+    <body>
+        <div class="playground" id="playground">
+            <div class="food" id="snakeFood"></div>
+
+            <div id="snakeBody"></div>
+        </div>
+
+        <div>Score: <span id="scoreElement">0</span></div>
+
+        <button onclick="changeDirection('up')">up</button>
+        <button onclick="changeDirection('down')">down</button>
+        <button onclick="changeDirection('right')">right</button>
+        <button onclick="changeDirection('left')">left</button>
+
+        <script>
+            let unit = 20;
+            let playgroundWidth = 10;
+            let playgroundHeight = 10;
+
+            let score = 0;
+
+            const initialParts = [
+                { top: 2, left: 4 },
+                { top: 2, left: 3 },
+                { top: 2, left: 2 },
+                { top: 2, left: 1 },
+            ];
+
+            let snakeBodyParts = initialParts;
+
+            let snakePositionLeft = 4;
+            let snakePositionTop = 2;
+            let direction = "right"; // left, up, down
+
+            let foodPositionTop;
+            let foodPositionLeft;
+
+            const scoreElement = document.getElementById("scoreElement");
+
+            function listenKeydown(event) {
+                switch (event.key) {
+                    case "ArrowUp":
+                        changeDirection("up");
+                        break;
+                    case "ArrowDown":
+                        changeDirection("down");
+                        break;
+                    case "ArrowRight":
+                        changeDirection("right");
+                        break;
+                    case "ArrowLeft":
+                        changeDirection("left");
+                        break;
+                }
+            }
+            document.addEventListener("keydown", listenKeydown);
+
+            function resetPlayground() {
+                const playground = document.getElementById("playground");
+                playground.style.height = playgroundHeight * unit;
+                playground.style.width = playgroundWidth * unit;
+
+                const food = document.getElementById("snakeFood");
+                food.style.height = 1 * unit;
+                food.style.width = 1 * unit;
+
+                score = 0;
+
+                generateFood();
+                direction = "right";
+
+                snakeBodyParts = [...initialParts];
+                snakePositionLeft = 4;
+                snakePositionTop = 2;
+            }
+
+            function renderBodyParts() {
+                let bodyHtml = "";
+                for (let i = 0; i < snakeBodyParts.length; i++) {
+                    const bodyStyle = `width: ${unit}px; height: ${unit}px; top: ${snakeBodyParts[i].top * unit}px; left: ${snakeBodyParts[i].left * unit}px`;
+                    bodyHtml += `<div class="body" style="${bodyStyle}"></div>`;
+                }
+                const body = document.getElementById("snakeBody");
+                body.innerHTML = bodyHtml;
+            }
+
+            function changeDirection(value) {
+                if (direction == "up" || direction == "down") {
+                    if (value == "left" || value == "right") {
+                        direction = value;
+                    }
+                } else if (direction == "right" || direction == "left") {
+                    if (value == "up" || value == "down") {
+                        direction = value;
+                    }
+                }
+            }
+
+            function goRight() {
+                if (snakePositionLeft < playgroundWidth - 1) {
+                    snakePositionLeft += 1;
+                } else {
+                    snakePositionLeft = 0;
+                }
+            }
+
+            function goLeft() {
+                if (snakePositionLeft == 0) {
+                    snakePositionLeft = playgroundWidth - 1;
+                } else {
+                    snakePositionLeft -= 1;
+                }
+            }
+
+            function goDown() {
+                if (snakePositionTop < playgroundHeight - 1) {
+                    snakePositionTop += 1;
+                } else {
+                    snakePositionTop = 0;
+                }
+            }
+
+            function goUp() {
+                if (snakePositionTop == 0) {
+                    snakePositionTop = playgroundHeight - 1;
+                } else {
+                    snakePositionTop -= 1;
+                }
+            }
+
+            function getRandomInt(max) {
+                return Math.floor(Math.random() * (max + 1));
+            }
+
+            function generateFood() {
+                const food = document.getElementById("snakeFood");
+
+                foodPositionTop = getRandomInt(playgroundHeight - 1);
+                foodPositionLeft = getRandomInt(playgroundWidth - 1);
+
+                food.style.left = foodPositionLeft * unit;
+                food.style.top = foodPositionTop * unit;
+            }
+
+            function gameLoop() {
+                switch (direction) {
+                    case "up":
+                        goUp();
+                        break;
+                    case "down":
+                        goDown();
+                        break;
+                    case "right":
+                        goRight();
+                        break;
+                    case "left":
+                        goLeft();
+                        break;
+                }
+
+                for (let i = 0; i < snakeBodyParts.length; i++) {
+                    if (snakePositionTop == snakeBodyParts[i].top && snakePositionLeft == snakeBodyParts[i].left) {
+                        resetPlayground();
+                        alert("Game over");
+                        break;
+                    }
+                }
+
+                snakeBodyParts.unshift({ top: snakePositionTop, left: snakePositionLeft });
+                snakeBodyParts.pop();
+
+                renderBodyParts();
+
+                if (snakePositionTop == foodPositionTop && snakePositionLeft == foodPositionLeft) {
+                    score++;
+                    scoreElement.innerText = score;
+                    generateFood();
+                    snakeBodyParts.push({});
+                }
+            }
+
+            resetPlayground();
+            setInterval(gameLoop, 200);
+        </script>
+    </body>
+</html>

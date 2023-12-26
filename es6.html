@@ -1,0 +1,65 @@
+<script>
+    // string literal
+    const text = "Sarnam";
+    const cardElement = "<div>" + text + "</div>";
+    const cardElement1 = `
+        <div class="card">
+            <span>${text}<span>
+        </div>`;
+
+    // spread operator
+
+    const arr = [1, 2, 3];
+    const obj = { name: "Sarina", age: 17 };
+
+    console.log([0, -1, ...arr, 5, 6]);
+    console.log({
+        surname: "bold",
+        ...obj,
+    });
+
+    // arrow function
+
+    function greetings(name = "Guest") {
+        console.log("hello", name);
+    }
+
+    greetings("Bold");
+    greetings();
+
+    const greetings1 = (name) => {
+        console.log("hello", name);
+    };
+
+    //syntactic sugar
+
+    () => {};
+    (a) => a;
+    const sum = (a, b) => a + b;
+
+    function sum1(a, b) {
+        return a + b;
+    }
+
+    // let const
+    let a = "global";
+
+    var b; // dont use
+
+    if (true) {
+        let a = "hello";
+        console.log(a);
+    }
+
+    for (let a = 0; a < 10; a++) {
+        console.log(a);
+    }
+
+    function hello() {
+        let a = "inside function";
+        console.log(a);
+    }
+
+    hello();
+    console.log(a);
+</script>
