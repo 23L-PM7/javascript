@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+.flex {
+  display: flex;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.container {
+  height: 100vh;
+  width: 1000px;
+  margin: 0 auto;
+  padding-top: 100px;
+  display: flex;
+  gap: 100px;
+}
+
+form {
+  display: flex;
+  height: fit-content;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  padding: 70px 50px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  max-width: 300px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-section label {
+  font-weight: 700;
+  color: #32749a;
+}
+
+.ratio-buttons {
+  padding-left: 10px;
+}
+
+.checkbox {
+  width: 100px;
+  padding-left: 10px;
+}
+
+#output {
+  flex: 1;
+}
+
+.checkboxes {
+  margin-top: 20px;
+}
+
+button {
+  background-color: #32749a;
+  color: white;
+  border: none;
+  padding: 15px;
+  text-transform: uppercase;
+}
