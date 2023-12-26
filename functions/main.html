@@ -7,11 +7,28 @@
   </head>
   <body>
     <script>
-      function greet(name) {
-        console.log("Hello there " + name, ":)");
+      //   function greet(name) {
+      //     console.log("Hello there " + name, ":)");
+      //   }
+      //   let input = prompt("Enter your name: ");
+      //   greet(input);
+
+      function heron(a, b, c) {
+        console.log({ a, b, c });
+        let s = (a + b + c) / 2;
+        console.log({ s });
+        let result = s * (s - a) * (s - b) * (s - c);
+        console.log({ result });
+        console.log(Math.sqrt(result));
       }
-      let input = prompt("Enter your name: ");
-      greet(input);
+      let input = prompt("Enter the three digits of the triangle Eg.(a,b,c):");
+      console.log({ input });
+
+      const array = input.split(",");
+
+      console.log({ array });
+
+      heron(Number(array[0]), Number(array[1]), Number(array[2]));
     </script>
   </body>
 </html>
