@@ -4,6 +4,10 @@ body {
   font-family: monospace;
 }
 
+button {
+  cursor: pointer;
+}
+
 .flex {
   display: flex;
 }
